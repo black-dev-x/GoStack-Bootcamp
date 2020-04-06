@@ -1,17 +1,16 @@
 const express = require('express')
-
+const { uuid } = require('uuidv4')
 const app = express()
 app.use(express.json())
 
 let projects = []
-let count = 1
 
 app.get('/projects', (request, response) => {
   response.json(projects)
 })
 
 app.post('/projects', (request, response) => {
-  const newProject = { id: count++, ...request.body }
+  const newProject = { id: uuid(), ...request.body }
   projects.push(newProject)
   response.json(newProject)
 })
