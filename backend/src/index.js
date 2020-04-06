@@ -6,7 +6,11 @@ app.use(express.json())
 let projects = []
 
 app.get('/projects', (request, response) => {
-  response.json(projects)
+  const { title } = request.query
+  const result = title
+    ? projects.filter(project => project.title.includes(title))
+    : projects
+  response.json(result)
 })
 
 app.post('/projects', (request, response) => {
@@ -19,6 +23,9 @@ app.put('/projects/:id', (request, response) => {
   const { id } = request.params
   const updatedProject = request.body
   const index = projects.findIndex(project => project.id == id)
+  if (index == -1) {
+    return response.status(400).json({ error: 'Product not found' })
+  }
   projects[index] = updatedProject
   response.json(updatedProject)
 })
