@@ -1,23 +1,34 @@
 const express = require('express')
 
 const app = express()
+app.use(express.json())
 
-const projetos = ['projeto 1', 'projeto 2', 'projeto 3']
+const projects = []
+let count = 1
 
-app.get('/projetos', (requisicao, resposta) => {
-  resposta.json(projetos)
+app.get('/projects', (request, response) => {
+  response.json(projects)
 })
 
-app.post('/projetos', (requisicao, resposta) => {
-  resposta.json(projetos)
+app.post('/projects', (request, response) => {
+  const newProject = { id: count++, ...request.body }
+  projects.push(newProject)
+  response.json(newProject)
 })
 
-app.put('/projetos/:id', (requisicao, resposta) => {
-  resposta.json(projetos)
+app.put('/projects/:id', (request, response) => {
+  const { id } = request.params
+  const updatedProject = request.body
+  const index = projects.findIndex(project => project.id == id)
+  projects[index] = updatedProject
+  response.json(updatedProject)
 })
 
-app.delete('/projetos/:id', (requisicao, resposta) => {
-  resposta.json(projetos)
+app.delete('/projects/:id', (request, response) => {
+  const { id } = request.params
+  const index = projects.findIndex(project => project.id == id)
+  projects.splice(index, 1)
+  response.json(projects)
 })
 
 app.listen(3333, () => console.log('(╯°□°）╯︵ ┻━┻ Servidor esta rodando'))
