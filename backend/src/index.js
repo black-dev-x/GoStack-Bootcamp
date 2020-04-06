@@ -3,7 +3,7 @@ const express = require('express')
 const app = express()
 app.use(express.json())
 
-const projects = []
+let projects = []
 let count = 1
 
 app.get('/projects', (request, response) => {
@@ -26,8 +26,7 @@ app.put('/projects/:id', (request, response) => {
 
 app.delete('/projects/:id', (request, response) => {
   const { id } = request.params
-  const index = projects.findIndex(project => project.id == id)
-  projects.splice(index, 1)
+  projects = projects.filter(project => project.id != id)
   response.json(projects)
 })
 
