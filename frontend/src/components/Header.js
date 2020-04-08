@@ -1,7 +1,8 @@
 import React from 'react'
 
-export default _ => (
+export default props => (
   <header>
-    <h1>ReactJS</h1>
+    <h1>{props.title}</h1>
+    {props.children}
   </header>
 )
