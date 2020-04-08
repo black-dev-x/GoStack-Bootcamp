@@ -6,7 +6,8 @@ import {
   Text,
   StyleSheet,
   StatusBar,
-  SafeAreaView
+  SafeAreaView,
+  TouchableOpacity
 } from 'react-native'
 
 export default _ => {
@@ -17,6 +18,15 @@ export default _ => {
       console.log(response.data)
     })
   }, [])
+
+  const addProject = () => {
+    const newProject = {
+      title: 'ainda assim outro projeto'
+    }
+    api
+      .post('/projects', newProject)
+      .then(response => setProjects([...projects, response.data]))
+  }
   return (
     <>
       <StatusBar barStyle="light-content" backgroundColor="#7159c1"></StatusBar>
@@ -28,6 +38,13 @@ export default _ => {
             <Text style={styles.project}>{item.title}</Text>
           )}
         ></FlatList>
+        <TouchableOpacity
+          activeOpacity={0.6}
+          style={styles.button}
+          onPress={addProject}
+        >
+          <Text style={styles.buttonText}>Adicionar projeto</Text>
+        </TouchableOpacity>
       </SafeAreaView>
     </>
   )
@@ -41,6 +58,18 @@ const styles = StyleSheet.create({
   project: {
     color: '#fff',
     fontSize: 20,
+    fontWeight: 'bold'
+  },
+  button: {
+    backgroundColor: '#FFF',
+    margin: 20,
+    height: 50,
+    borderRadius: 4,
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  buttonText: {
+    fontSize: 16,
     fontWeight: 'bold'
   }
 })
