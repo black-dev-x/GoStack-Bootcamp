@@ -4,10 +4,7 @@ import api from '../services/api'
 import './App.css'
 
 export default _ => {
-  const [projects, setProjects] = useState([
-    'Desenvolvimento de app',
-    'Front-end web'
-  ])
+  const [projects, setProjects] = useState([])
   useEffect(() => {
     api.get('projects').then(response => setProjects(response.data))
   }, [])
@@ -18,8 +15,8 @@ export default _ => {
     <>
       <Header title="ReactJS" />
       <ul>
-        {projects.map((project, index) => (
-          <li key={index}>{project}</li>
+        {projects.map(project => (
+          <li key={project.id}>{project.title}</li>
         ))}
       </ul>
       <button onClick={addProject}>Adicionar projeto</button>
