@@ -9,7 +9,10 @@ export default _ => {
     api.get('projects').then(response => setProjects(response.data))
   }, [])
   const addProject = () => {
-    setProjects([...projects, 'Novo projeto'])
+    const newProject = { title: 'titulo legal', owner: 'DevX' }
+    api.post('projects', newProject).then(response => {
+      setProjects([...projects, response.data])
+    })
   }
   return (
     <>
