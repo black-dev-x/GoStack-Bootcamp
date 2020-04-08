@@ -5,14 +5,16 @@ import './App.css'
 
 export default _ => {
   const [projects, setProjects] = useState([])
+
   useEffect(() => {
     api.get('projects').then(response => setProjects(response.data))
   }, [])
-  const addProject = () => {
+
+  const addProject = async () => {
     const newProject = { title: 'titulo legal', owner: 'DevX' }
-    api.post('projects', newProject).then(response => {
-      setProjects([...projects, response.data])
-    })
+    const response = await api.post('projects', newProject)
+    const project = response.data
+    setProjects([...projects, project])
   }
   return (
     <>
