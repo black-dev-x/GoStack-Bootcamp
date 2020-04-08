@@ -1,23 +1,44 @@
-import React from 'react'
-import { View, Text, StyleSheet, StatusBar } from 'react-native'
+import React, { useEffect, useState } from 'react'
 
-export default _ => (
-  <>
-    <StatusBar barStyle="light-content" backgroundColor="#7159c1"></StatusBar>
-    <View style={styles.container}>
-      <Text style={styles.title}>Hello world</Text>
-    </View>
-  </>
-)
+import api from './src/services/api'
+import {
+  FlatList,
+  Text,
+  StyleSheet,
+  StatusBar,
+  SafeAreaView
+} from 'react-native'
+
+export default _ => {
+  const [projects, setProjects] = useState([])
+  useEffect(() => {
+    api.get('/projects').then(response => {
+      setProjects(response.data)
+      console.log(response.data)
+    })
+  }, [])
+  return (
+    <>
+      <StatusBar barStyle="light-content" backgroundColor="#7159c1"></StatusBar>
+      <SafeAreaView style={styles.container}>
+        <FlatList
+          data={projects}
+          keyExtractor={project => project.id}
+          renderItem={({ item }) => (
+            <Text style={styles.project}>{item.title}</Text>
+          )}
+        ></FlatList>
+      </SafeAreaView>
+    </>
+  )
+}
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#7159c1',
-    justifyContent: 'center',
-    alignItems: 'center'
+    backgroundColor: '#7159c1'
   },
-  title: {
+  project: {
     color: '#fff',
     fontSize: 20,
     fontWeight: 'bold'
