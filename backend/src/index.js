@@ -5,7 +5,19 @@ app.use(express.json())
 
 let projects = []
 
-app.get('/projects', (request, response) => {
+const debugRequest = (request, _, next) => {
+  const { method, url } = request
+  const logText = `[${method.toUpperCase()} ${url}]`
+  console.log(logText)
+  next()
+}
+const log = (request, _, next) => {
+  console.log('requisição feita')
+  next()
+}
+app.use(log)
+
+app.get('/projects', debugRequest, (request, response) => {
   const { title } = request.query
   const result = title
     ? projects.filter(project => project.title.includes(title))
